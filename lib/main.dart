@@ -1,9 +1,10 @@
-import 'package:expense_tracker/widgets/transaction_list.dart';
+import './widgets/no_records.dart';
 
+import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
-
 import './models/transaction.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,6 +13,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Expense Tracker',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.deepPurple,
+        accentColor: Colors.orangeAccent,
+        textTheme: GoogleFonts.quicksandTextTheme(Theme.of(context).textTheme)
+            .copyWith(
+          title:
+              GoogleFonts.quicksand(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        appBarTheme: AppBarTheme.of(context).copyWith(
+          textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme)
+              .copyWith(
+            title:
+                GoogleFonts.openSans(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
       home: HomePage(),
     );
   }
@@ -23,11 +41,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> transactions = [
-    Transaction(id: 't3', title: 'Beer', amount: 400, date: DateTime.now()),
-  ];
+  final List<Transaction> transactions = [];
 
-  void addTransaction(String txTitle, double txAmount) {
+  void _addTransaction(String txTitle, double txAmount) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
@@ -38,13 +54,36 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void startNewTransaction(BuildContext ctx) {
+    showModalBottomSheet(
+        context: ctx,
+        builder: (bCtx) {
+          return NewTransaction(_addTransaction);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          startNewTransaction(context);
+        },
+      ),
       appBar: AppBar(
         title: Text(
           'Expense Tracker',
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () {
+              startNewTransaction(context);
+            },
+          )
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -53,9 +92,10 @@ class _HomePageState extends State<HomePage> {
             child: Text('CHART'),
             color: Colors.cyanAccent,
           ),
-          NewTransaction(addTransaction),
           Expanded(
-            child: TransactionList(transactions),
+            child: transactions.isEmpty
+                ? NoRecords()
+                : TransactionList(transactions),
           ),
         ],
       ),
