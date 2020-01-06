@@ -46,18 +46,18 @@ class _HomePageState extends State<HomePage> {
           'Expense Tracker',
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Card(
-              child: Text('CHART'),
-              color: Colors.cyanAccent,
-            ),
-            NewTransaction(addTransaction),
-            TransactionList(transactions),
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Card(
+            child: Text('CHART'),
+            color: Colors.cyanAccent,
+          ),
+          NewTransaction(addTransaction),
+          Expanded(
+            child: TransactionList(transactions),
+          ),
+        ],
       ),
     );
   }
