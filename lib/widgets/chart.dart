@@ -37,25 +37,23 @@ class Chart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(10),
-      child: recentTransactions.isEmpty
-          ? Text('No Data')
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: <Widget>[
-                  ..._groupedTransactionValues.reversed.map((tx) {
-                    return Expanded(
-                        child: ChartBar(
-                      spentAmount: tx['amount'],
-                      label: tx['day'],
-                      spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
-                          ? 0.0
-                          : (tx['amount'] as double) / _totalAmountSpent,
-                    ));
-                  }).toList(),
-                ],
-              ),
-            ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            ..._groupedTransactionValues.reversed.map((tx) {
+              return Expanded(
+                  child: ChartBar(
+                spentAmount: tx['amount'],
+                label: tx['day'],
+                spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
+                    ? 0.0
+                    : (tx['amount'] as double) / _totalAmountSpent,
+              ));
+            }).toList(),
+          ],
+        ),
+      ),
     );
   }
 }

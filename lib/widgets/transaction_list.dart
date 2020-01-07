@@ -4,45 +4,51 @@ import 'package:intl/intl.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
-  TransactionList(this.transactions);
+  final Function deleteTransaction;
+  TransactionList(this.transactions, this.deleteTransaction);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: transactions.length,
       itemBuilder: (context, index) {
-        return Card(
-          child: Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(15),
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Theme.of(context).primaryColor, width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                child: Text(
-                  transactions[index].amount.toStringAsFixed(2),
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).primaryColor),
+        return Container(
+          margin: EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+          child: Card(
+            elevation: 4,
+            child: ListTile(
+              leading: CircleAvatar(
+                radius: 30,
+                child: Padding(
+                  padding: EdgeInsets.all(6),
+                  child: FittedBox(
+                      child: Text(
+                          '₹${transactions[index].amount.toStringAsFixed(1)}')),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              title: Text(
+                transactions[index].title,
+                style: Theme.of(context).textTheme.title,
+              ),
+              subtitle: Text(DateFormat.yMMMd()
+                  .format(transactions[index].date)
+                  .toString()),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(
-                    transactions[index].title,
-                    style: Theme.of(context).textTheme.title,
+                  // IconButton(
+                  //   icon: Icon(Icons.edit),
+                  //   color: Theme.of(context).primaryColor,
+                  //   onPressed: () {},
+                  // ),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    color: Theme.of(context).errorColor,
+                    onPressed: () => deleteTransaction(transactions[index].id),
                   ),
-                  Text(
-                    DateFormat('dd MMM yyyy').format(transactions[index].date),
-                    style: TextStyle(color: Colors.grey),
-                  )
                 ],
-              )
-            ],
+              ),
+            ),
           ),
         );
       },

@@ -41,20 +41,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> transactions = [];
+  final List<Transaction> _transactions = [];
 
-  void _addTransaction(String txTitle, double txAmount) {
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
+  void _addTransaction(String txTitle, double txAmount, DateTime txDate) {
     final newTx = Transaction(
         title: txTitle,
         amount: txAmount,
         id: DateTime.now().toString(),
-        date: DateTime.now());
+        date: txDate);
     setState(() {
-      transactions.add(newTx);
+      _transactions.add(newTx);
     });
   }
 
-  void startNewTransaction(BuildContext ctx) {
+  void _startNewTransaction(BuildContext ctx) {
     showModalBottomSheet(
         context: ctx,
         builder: (bCtx) {
@@ -62,10 +68,10 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  List<Transaction> get _recentTransactions {
-    return transactions.where((tx) {
-      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
-    }).toList();
+  void _deleteTx(String id) {
+    setState(() {
+      _transactions.removeWhere((tx) => tx.id == id);
+    });
   }
 
   @override
@@ -75,7 +81,7 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          startNewTransaction(context);
+          _startNewTransaction(context);
         },
       ),
       appBar: AppBar(
@@ -86,7 +92,7 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              startNewTransaction(context);
+              _startNewTransaction(context);
             },
           )
         ],
@@ -96,9 +102,9 @@ class _HomePageState extends State<HomePage> {
         children: <Widget>[
           Chart(_recentTransactions),
           Expanded(
-            child: transactions.isEmpty
+            child: _transactions.isEmpty
                 ? NoRecords()
-                : TransactionList(transactions),
+                : TransactionList(_transactions, _deleteTx),
           ),
         ],
       ),
