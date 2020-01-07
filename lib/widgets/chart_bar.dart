@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
@@ -42,6 +44,8 @@ class ChartBar extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
+                      // color: Colors
+                      //     .primaries[Random().nextInt(Colors.primaries.length)],
                       borderRadius: BorderRadius.circular(20)),
                 ),
               ),

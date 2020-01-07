@@ -39,18 +39,29 @@ class Chart extends StatelessWidget {
       margin: EdgeInsets.all(10),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(
+        child: Column(
           children: <Widget>[
-            ..._groupedTransactionValues.reversed.map((tx) {
-              return Expanded(
-                  child: ChartBar(
-                spentAmount: tx['amount'],
-                label: tx['day'],
-                spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
-                    ? 0.0
-                    : (tx['amount'] as double) / _totalAmountSpent,
-              ));
-            }).toList(),
+            Text(
+              "Last 7 Days",
+              style: Theme.of(context).textTheme.title,
+            ),
+            SizedBox(
+              height: 8,
+            ),
+            Row(
+              children: <Widget>[
+                ..._groupedTransactionValues.reversed.map((tx) {
+                  return Expanded(
+                      child: ChartBar(
+                    spentAmount: tx['amount'],
+                    label: tx['day'],
+                    spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
+                        ? 0.0
+                        : (tx['amount'] as double) / _totalAmountSpent,
+                  ));
+                }).toList(),
+              ],
+            ),
           ],
         ),
       ),
