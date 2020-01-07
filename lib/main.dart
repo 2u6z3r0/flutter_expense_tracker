@@ -1,5 +1,5 @@
 import './widgets/no_records.dart';
-
+import './widgets/chart.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
@@ -62,6 +62,12 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+  List<Transaction> get _recentTransactions {
+    return transactions.where((tx) {
+      return tx.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,10 +94,7 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Card(
-            child: Text('CHART'),
-            color: Colors.cyanAccent,
-          ),
+          Chart(_recentTransactions),
           Expanded(
             child: transactions.isEmpty
                 ? NoRecords()

@@ -41,8 +41,29 @@ class _NewTransactionState extends State<NewTransaction> {
               decoration: InputDecoration(labelText: 'Amount'),
               controller: amountController,
             ),
-            FlatButton(
-              child: Text('Add transaction'),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: <Widget>[
+                Text('Date yet not selected'),
+                FlatButton(
+                  child: Text('Choose date',
+                      style: Theme.of(context)
+                          .textTheme
+                          .title
+                          .copyWith(color: Theme.of(context).primaryColor)),
+                  onPressed: () {},
+                )
+              ],
+            ),
+            RaisedButton(
+              color: Theme.of(context).accentColor,
+              elevation: 4,
+              child: Text(
+                'Add transaction',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               textColor: Colors.purple,
               onPressed: () {
                 addNewTransaction();
