@@ -1,4 +1,4 @@
-import 'dart:math';
+// import 'dart:math';
 
 import 'package:flutter/material.dart';
 
@@ -7,7 +7,7 @@ class ChartBar extends StatelessWidget {
   final double spentAmount;
   final double spentAmountPrcntOfTotal;
 
-  ChartBar(
+  const ChartBar(
       {@required this.label,
       @required this.spentAmount,
       @required this.spentAmountPrcntOfTotal});
@@ -16,47 +16,56 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     print(spentAmountPrcntOfTotal.toString());
     print(spentAmount.toString());
-    return Column(
-      children: <Widget>[
-        Container(
-          height: 20,
-          child: FittedBox(
-            child: Text('₹${spentAmount.toStringAsFixed(0)}'),
+    return LayoutBuilder(builder: (context, constraints) {
+      return Column(
+        children: <Widget>[
+          Container(
+            height: constraints.maxHeight * 0.15,
+            child: FittedBox(
+              child: Text('₹${spentAmount.toStringAsFixed(0)}'),
+            ),
           ),
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Container(
-          height: 60,
-          width: 10,
-          child: Stack(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey, width: 1),
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(220, 220, 220, 1),
-                ),
-              ),
-              FractionallySizedBox(
-                heightFactor: spentAmountPrcntOfTotal,
-                child: Container(
+          SizedBox(
+            height: constraints.maxHeight * 0.05,
+          ),
+          Container(
+            height: constraints.maxHeight * 0.6,
+            width: 10,
+            child: Stack(
+              children: <Widget>[
+                Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      // color: Colors
-                      //     .primaries[Random().nextInt(Colors.primaries.length)],
-                      borderRadius: BorderRadius.circular(20)),
+                    border: Border.all(color: Colors.grey, width: 1),
+                    borderRadius: BorderRadius.circular(20),
+                    color: Color.fromRGBO(220, 220, 220, 1),
+                  ),
                 ),
-              ),
-            ],
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: FractionallySizedBox(
+                    alignment: Alignment.bottomCenter,
+                    heightFactor: spentAmountPrcntOfTotal,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          // color: Colors
+                          //     .primaries[Random().nextInt(Colors.primaries.length)],
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: 4,
-        ),
-        Text(label)
-      ],
-    );
+          SizedBox(
+            height: constraints.maxHeight * 0.05,
+          ),
+          Container(
+            height: constraints.maxHeight * 0.15,
+            child: FittedBox(child: Text(label)),
+          )
+        ],
+      );
+    });
   }
 }

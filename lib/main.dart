@@ -1,12 +1,17 @@
-import './widgets/no_records.dart';
+import 'dart:io';
+
+import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import './widgets/chart.dart';
 import './widgets/transaction_list.dart';
 import './widgets/new_transaction.dart';
 import './models/transaction.dart';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -42,6 +47,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Transaction> _transactions = [];
+  bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tx) {
@@ -74,39 +80,83 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  List<Widget> _buildPotrait(_chartWidget, _txListWidget) {
+    return [_chartWidget, _txListWidget];
+  }
+
+  List<Widget> _buildLandscape(_chartWidget, _txListWidget) {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text('Show Chart'),
+          Switch.adaptive(
+              activeColor: Theme.of(context).accentColor,
+              value: _showChart,
+              onChanged: (val) {
+                setState(() {
+                  _showChart = val;
+                });
+              }),
+        ],
+      ),
+      _showChart ? _chartWidget : _txListWidget
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context);
+    final _isLandscape = mediaQuery.orientation == Orientation.landscape;
+    final _appBar = AppBar(
+      title: const Text(
+        'Expense Tracker',
+      ),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () {
+            _startNewTransaction(context);
+          },
+        )
+      ],
+    );
+
+    final txListWidget = Container(
+      height: (mediaQuery.size.height -
+              _appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          0.7,
+      child: TransactionList(_transactions, _deleteTx),
+    );
+
+    final chartWidget = Container(
+      height: (mediaQuery.size.height -
+              _appBar.preferredSize.height -
+              mediaQuery.padding.top) *
+          0.3,
+      child: Chart(_recentTransactions),
+    );
+
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          _startNewTransaction(context);
-        },
-      ),
-      appBar: AppBar(
-        title: Text(
-          'Expense Tracker',
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {
+                _startNewTransaction(context);
+              },
+            ),
+      appBar: _appBar,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            if (_isLandscape) ..._buildLandscape(chartWidget, txListWidget),
+            if (!_isLandscape) ..._buildPotrait(chartWidget, txListWidget),
+          ],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              _startNewTransaction(context);
-            },
-          )
-        ],
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Chart(_recentTransactions),
-          Expanded(
-            child: _transactions.isEmpty
-                ? NoRecords()
-                : TransactionList(_transactions, _deleteTx),
-          ),
-        ],
       ),
     );
   }

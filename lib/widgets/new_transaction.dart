@@ -47,59 +47,66 @@ class _NewTransactionState extends State<NewTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        margin: EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Titile'),
-              controller: _titleController,
-            ),
-            TextField(
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(labelText: 'Amount'),
-              controller: _amountController,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: Text(
-                    _pickedDate == null
-                        ? 'No Date Choosen!'
-                        : DateFormat('dd/MM/yyyy').format(_pickedDate),
-                  ),
-                ),
-                FlatButton(
-                  child: Text(
-                    'Choose date',
-                    style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: _presentDatePicker,
-                )
-              ],
-            ),
-            RaisedButton(
-              color: Theme.of(context).primaryColor,
-              elevation: 4,
-              child: Text(
-                'Add transaction',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).buttonColor),
+    return SingleChildScrollView(
+      child: Card(
+        child: Container(
+          margin: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              TextField(
+                decoration: const InputDecoration(labelText: 'Titile'),
+                controller: _titleController,
               ),
-              textColor: Colors.purple,
-              onPressed: () {
-                addNewTransaction();
-              },
-            )
-          ],
+              TextField(
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(labelText: 'Amount'),
+                controller: _amountController,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Text(
+                      _pickedDate == null
+                          ? 'No Date Choosen!'
+                          : DateFormat('dd/MM/yyyy').format(_pickedDate),
+                    ),
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Choose date',
+                      style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: _presentDatePicker,
+                  )
+                ],
+              ),
+              RaisedButton(
+                color: Theme.of(context).primaryColor,
+                elevation: 4,
+                child: Text(
+                  'Add transaction',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).buttonColor),
+                ),
+                textColor: Colors.purple,
+                onPressed: () {
+                  addNewTransaction();
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

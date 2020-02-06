@@ -11,13 +11,15 @@ class NoRecords extends StatelessWidget {
             'No records added yet!',
             style: Theme.of(context).textTheme.title,
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Image.asset(
-            'assets/images/no_data_found.png',
-            fit: BoxFit.cover,
-          )
+          Expanded(
+            child: Image.asset(
+              'assets/images/no_data_found.png',
+              fit: BoxFit.fill,
+            ),
+          ),
         ],
       ),
     );

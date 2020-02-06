@@ -36,32 +36,21 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
+        child: Row(
           children: <Widget>[
-            Text(
-              "Last 7 Days",
-              style: Theme.of(context).textTheme.title,
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: <Widget>[
-                ..._groupedTransactionValues.reversed.map((tx) {
-                  return Expanded(
-                      child: ChartBar(
-                    spentAmount: tx['amount'],
-                    label: tx['day'],
-                    spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
-                        ? 0.0
-                        : (tx['amount'] as double) / _totalAmountSpent,
-                  ));
-                }).toList(),
-              ],
-            ),
+            ..._groupedTransactionValues.reversed.map((tx) {
+              return Expanded(
+                  child: ChartBar(
+                spentAmount: tx['amount'],
+                label: tx['day'],
+                spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
+                    ? 0.0
+                    : (tx['amount'] as double) / _totalAmountSpent,
+              ));
+            }).toList(),
           ],
         ),
       ),
