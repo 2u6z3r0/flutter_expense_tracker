@@ -13,7 +13,7 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
-  DateTime _pickedDate;
+  DateTime? _pickedDate;
 
   void addNewTransaction() {
     if (_amountController.text.isEmpty) {
@@ -77,10 +77,10 @@ class _NewTransactionState extends State<NewTransaction> {
                     child: Text(
                       _pickedDate == null
                           ? 'No Date Choosen!'
-                          : DateFormat('dd/MM/yyyy').format(_pickedDate),
+                          : DateFormat('dd/MM/yyyy').format(_pickedDate!),
                     ),
                   ),
-                  FlatButton(
+                  TextButton(
                     child: Text(
                       'Choose date',
                       style: TextStyle(

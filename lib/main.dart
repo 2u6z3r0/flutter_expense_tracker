@@ -1,6 +1,5 @@
-import 'dart:io';
+import 'package:universal_platform/universal_platform.dart';
 
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -24,13 +23,13 @@ class MyApp extends StatelessWidget {
         accentColor: Colors.orangeAccent,
         textTheme: GoogleFonts.quicksandTextTheme(Theme.of(context).textTheme)
             .copyWith(
-          title:
+          headline6:
               GoogleFonts.quicksand(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         appBarTheme: AppBarTheme.of(context).copyWith(
           textTheme: GoogleFonts.openSansTextTheme(Theme.of(context).textTheme)
               .copyWith(
-            title:
+            headline6:
                 GoogleFonts.openSans(fontSize: 20, fontWeight: FontWeight.bold),
           ),
         ),
@@ -140,7 +139,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Platform.isIOS
+      floatingActionButton: UniversalPlatform.isIOS
           ? Container()
           : FloatingActionButton(
               child: Icon(Icons.add),

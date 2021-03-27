@@ -44,8 +44,8 @@ class Chart extends StatelessWidget {
             ..._groupedTransactionValues.reversed.map((tx) {
               return Expanded(
                   child: ChartBar(
-                spentAmount: tx['amount'],
-                label: tx['day'],
+                spentAmount: tx['amount'] as double?,
+                label: tx['day'] as String?,
                 spentAmountPrcntOfTotal: _totalAmountSpent == 0.0
                     ? 0.0
                     : (tx['amount'] as double) / _totalAmountSpent,

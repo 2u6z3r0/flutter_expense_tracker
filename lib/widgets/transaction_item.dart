@@ -8,9 +8,9 @@ class TransactionItem extends StatelessWidget {
   final Function deleteTransaction;
 
   const TransactionItem({
-    Key key,
-    @required this.transaction,
-    @required this.deleteTransaction,
+    Key? key,
+    required this.transaction,
+    required this.deleteTransaction,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class TransactionItem extends StatelessWidget {
           ),
           title: Text(
             transaction.title,
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           subtitle:
               Text(DateFormat.yMMMd().format(transaction.date).toString()),
@@ -43,11 +43,11 @@ class TransactionItem extends StatelessWidget {
               //   onPressed: () {},
               // ),
               MediaQuery.of(context).size.width > 420
-                  ? FlatButton.icon(
+                  ? TextButton.icon(
                       onPressed: () => deleteTransaction(transaction.id),
                       icon: const Icon(Icons.delete),
                       label: const Text('Delete'),
-                      textColor: Theme.of(context).errorColor,
+                      // textColor: Theme.of(context).errorColor,
                     )
                   : IconButton(
                       icon: const Icon(Icons.delete),

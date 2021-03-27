@@ -9,7 +9,7 @@ class NoRecords extends StatelessWidget {
         children: <Widget>[
           Text(
             'No records added yet!',
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).textTheme.headline6,
           ),
           const SizedBox(
             height: 20,
